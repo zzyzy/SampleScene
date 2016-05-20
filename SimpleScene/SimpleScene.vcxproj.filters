@@ -13,12 +13,26 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Fragment Shaders">
-      <UniqueIdentifier>{f55f7210-4dad-450f-b243-c9ff1e2d644a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Vertex Shaders">
-      <UniqueIdentifier>{f2e7dae3-6aa2-4802-88d9-c98e3dada7c5}</UniqueIdentifier>
+      <UniqueIdentifier>{7c177456-7edb-4964-8c23-cc42f7336a86}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fragment Shaders">
+      <UniqueIdentifier>{334d39b5-0e6f-4c29-a1f2-ff2918447def}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="default.frag">
+      <Filter>Fragment Shaders</Filter>
+    </None>
+    <None Include="transformations.frag">
+      <Filter>Fragment Shaders</Filter>
+    </None>
+    <None Include="default.vert">
+      <Filter>Vertex Shaders</Filter>
+    </None>
+    <None Include="transformations.vert">
+      <Filter>Vertex Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -29,19 +43,5 @@
     <ClInclude Include="Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="default.frag">
-      <Filter>Fragment Shaders</Filter>
-    </None>
-    <None Include="default.vert">
-      <Filter>Vertex Shaders</Filter>
-    </None>
-    <None Include="transformations.frag">
-      <Filter>Fragment Shaders</Filter>
-    </None>
-    <None Include="transformations.vert">
-      <Filter>Vertex Shaders</Filter>
-    </None>
   </ItemGroup>
 </Project>
