@@ -33,6 +33,24 @@
     <None Include="transformations.vert">
       <Filter>Vertex Shaders</Filter>
     </None>
+    <None Include="lighting.vert">
+      <Filter>Vertex Shaders</Filter>
+    </None>
+    <None Include="lamp.vert">
+      <Filter>Vertex Shaders</Filter>
+    </None>
+    <None Include="lamp.frag">
+      <Filter>Fragment Shaders</Filter>
+    </None>
+    <None Include="lighting.frag">
+      <Filter>Fragment Shaders</Filter>
+    </None>
+    <None Include="flat_shading.frag">
+      <Filter>Fragment Shaders</Filter>
+    </None>
+    <None Include="flat_shading.vert">
+      <Filter>Vertex Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -41,6 +59,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

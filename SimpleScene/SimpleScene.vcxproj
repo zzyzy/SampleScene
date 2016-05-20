@@ -21,6 +21,12 @@
   <ItemGroup>
     <None Include="default.frag" />
     <None Include="default.vert" />
+    <None Include="flat_shading.frag" />
+    <None Include="flat_shading.vert" />
+    <None Include="lamp.frag" />
+    <None Include="lamp.vert" />
+    <None Include="lighting.frag" />
+    <None Include="lighting.vert" />
     <None Include="transformations.frag" />
     <None Include="transformations.vert" />
   </ItemGroup>
@@ -28,6 +34,8 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Geometry.h" />
     <ClInclude Include="Shader.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
