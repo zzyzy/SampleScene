@@ -1,5 +1,5 @@
 /*
-    Shader.h, based on learnopengl.com, OpenGL 3.3 compliant.
+    Shader.h, based on learnopengl.com
 
     TODO Implement Rule of Five
 */

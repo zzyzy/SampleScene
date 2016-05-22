@@ -1,8 +1,10 @@
 /*
-    Camera.h, based on learnopengl.com, OpenGL 3.3 compliant.
+    Camera.h, based on learnopengl.com
 
-    TODO Implement roll
+    TODO Implement roll -- needs checking
     TODO Implement quaternions
+    TODO Camera modes
+    TODO Refactor class -- use a better design or etc.
 */
 
 #pragma once
@@ -13,18 +15,26 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+enum class CameraMode
+{
+    FREE, ORTHO, SPHERICAL
+};
+
 // Defines several possible options for camera movement. Used as abstraction to stay away from window-system specific input methods
 enum Camera_Movement
 {
     FORWARD,
     BACKWARD,
     LEFT,
-    RIGHT
+    RIGHT,
+    UP,
+    DOWN
 };
 
 // Default camera values
 const GLfloat YAW = -90.0f;
 const GLfloat PITCH = 0.0f;
+const GLfloat ROLL = 90.0f;
 const GLfloat SPEED = 3.0f;
 const GLfloat SENSITIVTY = 0.25f;
 const GLfloat ZOOM = 45.0f;
@@ -42,49 +52,122 @@ public:
     // Eular Angles
     GLfloat Yaw;
     GLfloat Pitch;
+    GLfloat Roll;
     // Camera options
     GLfloat MovementSpeed;
     GLfloat MouseSensitivity;
     GLfloat Zoom;
+    // Spherical camera options
+    GLfloat camxoffset = 0.0f;
+    GLfloat camyoffset = 0.0f;
+    GLfloat camzoffset = 0.0f;
+    glm::vec3 Target;
+    // Camera mode
+    CameraMode mode;
 
     // Constructor with vectors
-    explicit Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), GLfloat yaw = YAW, GLfloat pitch = PITCH) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVTY), Zoom(ZOOM)
+    explicit Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), GLfloat yaw = YAW, GLfloat pitch = PITCH, GLfloat roll = ROLL) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVTY), Zoom(ZOOM)
     {
         this->Position = position;
         this->WorldUp = up;
         this->Yaw = yaw;
         this->Pitch = pitch;
+        this->Roll = roll;
         this->updateCameraVectors();
+        mode = CameraMode::FREE;
     }
 
     // Constructor with scalar values
-    Camera(GLfloat posX, GLfloat posY, GLfloat posZ, GLfloat upX, GLfloat upY, GLfloat upZ, GLfloat yaw, GLfloat pitch) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVTY), Zoom(ZOOM)
+    Camera(GLfloat posX, GLfloat posY, GLfloat posZ, GLfloat upX, GLfloat upY, GLfloat upZ, GLfloat yaw, GLfloat pitch, GLfloat roll) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVTY), Zoom(ZOOM)
     {
         this->Position = glm::vec3(posX, posY, posZ);
         this->WorldUp = glm::vec3(upX, upY, upZ);
         this->Yaw = yaw;
         this->Pitch = pitch;
+        this->Roll = roll;
         this->updateCameraVectors();
+        mode = CameraMode::FREE;
+    }
+
+    void SetupCamera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), GLfloat yaw = YAW, GLfloat pitch = PITCH, GLfloat roll = ROLL)
+    {
+        this->Position = position;
+        this->WorldUp = up;
+        this->Yaw = yaw;
+        this->Pitch = pitch;
+        this->Roll = roll;
+        this->updateCameraVectors();
+        mode = CameraMode::FREE;
+        Front = glm::vec3(0.0f, 0.0f, -1.0f);
+        MovementSpeed = SPEED;
+        MouseSensitivity = SENSITIVTY;
+        Zoom = ZOOM;
+    }
+
+    void SetSphericalMode(glm::vec3 target)
+    {
+        Target = target;
+        mode = CameraMode::SPHERICAL;
     }
 
     // Returns the view matrix calculated using Eular Angles and the LookAt Matrix
     glm::mat4 GetViewMatrix() const
     {
-        return glm::lookAt(this->Position, this->Position + this->Front, this->Up);
+        if (mode == CameraMode::FREE)
+        {
+            return glm::lookAt(this->Position, this->Position + this->Front, this->Up);
+        } 
+        if (mode == CameraMode::ORTHO)
+        {
+
+        }
+        if (mode == CameraMode::SPHERICAL)
+        {
+            GLfloat camX = sin(camxoffset) * 3.0f;
+            GLfloat camY = sin(camyoffset) * 3.0f;
+            GLfloat camZ = cos(camzoffset) * 3.0f;
+            return glm::lookAt(glm::vec3(camX, camY, camZ), Target, glm::vec3(0.0f, 1.0f, 0.0f));
+        }
+        return glm::mat4();
     }
 
     // Processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
     void ProcessKeyboard(Camera_Movement direction, GLfloat deltaTime)
     {
-        GLfloat velocity = this->MovementSpeed * deltaTime;
-        if (direction == FORWARD)
-            this->Position += this->Front * velocity;
-        if (direction == BACKWARD)
-            this->Position -= this->Front * velocity;
-        if (direction == LEFT)
-            this->Position -= this->Right * velocity;
-        if (direction == RIGHT)
-            this->Position += this->Right * velocity;
+        if (mode == CameraMode::FREE) {
+            GLfloat velocity = this->MovementSpeed * deltaTime;
+            if (direction == FORWARD)
+                this->Position += this->Front * velocity;
+            if (direction == BACKWARD)
+                this->Position -= this->Front * velocity;
+            if (direction == LEFT)
+                this->Position -= this->Right * velocity;
+            if (direction == RIGHT)
+                this->Position += this->Right * velocity;
+            if (direction == UP)
+                this->Position += this->Up * velocity;
+            if (direction == DOWN)
+                this->Position -= this->Up * velocity;
+        } else if (mode == CameraMode::SPHERICAL)
+        {
+            GLfloat velocity = this->MovementSpeed * deltaTime;
+            if (direction == LEFT) {
+                camxoffset -= velocity;
+                camzoffset -= velocity;
+            }
+            if (direction == RIGHT) {
+                camxoffset += velocity;
+                camzoffset += velocity;
+            }
+            if (direction == UP) {
+                camyoffset -= velocity;
+                camzoffset -= velocity;
+            }
+            if (direction == DOWN) {
+                camyoffset += velocity;
+                camzoffset += velocity;
+            }
+        }
     }
 
     // Processes input received from a mouse input system. Expects the offset value in both the x and y direction.
@@ -93,8 +176,31 @@ public:
         xoffset *= this->MouseSensitivity;
         yoffset *= this->MouseSensitivity;
 
-        this->Yaw += xoffset;
-        this->Pitch += yoffset;
+        SetLookAt(xoffset, yoffset, 0.0f);
+    }
+
+    // Processes input received from a mouse scroll-wheel event. Only requires input on the vertical wheel-axis
+    void ProcessMouseScroll(GLfloat yoffset)
+    {
+        SetZoom(yoffset);
+    }
+
+    void SetZoom(const GLfloat& fov)
+    {
+        if (this->Zoom >= 1.0f && this->Zoom <= 45.0f)
+            this->Zoom -= fov;
+        if (this->Zoom <= 1.0f)
+            this->Zoom = 1.0f;
+        if (this->Zoom >= 45.0f)
+            this->Zoom = 45.0f;
+    }
+
+    void SetLookAt(GLfloat xamount, GLfloat yamount, GLfloat zamount, GLboolean constrainPitch = true)
+    {
+        if (mode == CameraMode::SPHERICAL) return;
+        this->Yaw += xamount;
+        this->Pitch += yamount;
+        this->Roll += zamount;
 
         // Make sure that when pitch is out of bounds, screen doesn't get flipped
         if (constrainPitch)
@@ -109,15 +215,15 @@ public:
         this->updateCameraVectors();
     }
 
-    // Processes input received from a mouse scroll-wheel event. Only requires input on the vertical wheel-axis
-    void ProcessMouseScroll(GLfloat yoffset)
+    void ResetToPosition(glm::vec3 position)
     {
-        if (this->Zoom >= 1.0f && this->Zoom <= 45.0f)
-            this->Zoom -= yoffset;
-        if (this->Zoom <= 1.0f)
-            this->Zoom = 1.0f;
-        if (this->Zoom >= 45.0f)
-            this->Zoom = 45.0f;
+        this->Position = position;
+        this->WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
+        this->Yaw = YAW;
+        this->Pitch = PITCH;
+        this->Roll = ROLL;
+        this->updateCameraVectors();
+        mode = CameraMode::FREE;
     }
 
 private:
@@ -132,7 +238,10 @@ private:
         this->Front = glm::normalize(front);
         // Also re-calculate the Right and Up vector
         this->Right = glm::normalize(glm::cross(this->Front, this->WorldUp)); // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
-        this->Up = glm::normalize(glm::cross(this->Right, this->Front));
+        this->Up.x = cos(glm::radians(this->Roll));
+        this->Up.y = sin(glm::radians(this->Roll));
+        this->Up = glm::normalize(this->Up);
+        //this->Up = glm::normalize(glm::cross(this->Right, this->Front));
     }
 };
 

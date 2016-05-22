@@ -19,42 +19,60 @@
     <Filter Include="Fragment Shaders">
       <UniqueIdentifier>{334d39b5-0e6f-4c29-a1f2-ff2918447def}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Meshes">
+      <UniqueIdentifier>{778bef82-b783-423d-82f8-b7a2547d5a78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Lights">
+      <UniqueIdentifier>{a8bf576b-321f-44a5-b5d3-01f40f3522e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Lights">
+      <UniqueIdentifier>{98cf8caa-4b89-4d6b-a530-d692475859af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Static Properties">
+      <UniqueIdentifier>{ebba9c4b-a36e-42d7-915d-ca0f894e20a8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="default.frag">
-      <Filter>Fragment Shaders</Filter>
-    </None>
-    <None Include="transformations.frag">
-      <Filter>Fragment Shaders</Filter>
-    </None>
-    <None Include="default.vert">
-      <Filter>Vertex Shaders</Filter>
-    </None>
-    <None Include="transformations.vert">
-      <Filter>Vertex Shaders</Filter>
-    </None>
-    <None Include="lighting.vert">
-      <Filter>Vertex Shaders</Filter>
-    </None>
     <None Include="lamp.vert">
       <Filter>Vertex Shaders</Filter>
     </None>
     <None Include="lamp.frag">
       <Filter>Fragment Shaders</Filter>
     </None>
-    <None Include="lighting.frag">
+    <None Include="flat_shader.frag">
       <Filter>Fragment Shaders</Filter>
     </None>
-    <None Include="flat_shading.frag">
+    <None Include="smooth_shader.frag">
       <Filter>Fragment Shaders</Filter>
     </None>
-    <None Include="flat_shading.vert">
+    <None Include="flat_shader.vert">
+      <Filter>Vertex Shaders</Filter>
+    </None>
+    <None Include="smooth_shader.vert">
+      <Filter>Vertex Shaders</Filter>
+    </None>
+    <None Include="2d_shader.frag">
+      <Filter>Fragment Shaders</Filter>
+    </None>
+    <None Include="2d_shader.vert">
+      <Filter>Vertex Shaders</Filter>
+    </None>
+    <None Include="text.frag">
+      <Filter>Fragment Shaders</Filter>
+    </None>
+    <None Include="text.vert">
       <Filter>Vertex Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLight.cpp">
+      <Filter>Source Files\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="SpotLight.cpp">
+      <Filter>Source Files\Lights</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -64,8 +82,32 @@
     <ClInclude Include="Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Geometry.h">
+    <ClInclude Include="Material.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Table.h">
+      <Filter>Header Files\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane.h">
+      <Filter>Header Files\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="Chair.h">
+      <Filter>Header Files\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLight.h">
+      <Filter>Header Files\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="SpotLight.h">
+      <Filter>Header Files\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="LightProperties.h">
+      <Filter>Header Files\Static Properties</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectProperties.h">
+      <Filter>Header Files\Static Properties</Filter>
+    </ClInclude>
+    <ClInclude Include="OrnamentProperties.h">
+      <Filter>Header Files\Static Properties</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
