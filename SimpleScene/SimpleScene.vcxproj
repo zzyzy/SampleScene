@@ -19,16 +19,34 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <None Include="default.frag" />
-    <None Include="default.vert" />
-    <None Include="transformations.frag" />
-    <None Include="transformations.vert" />
+    <None Include="2d_shader.frag" />
+    <None Include="2d_shader.vert" />
+    <None Include="flat_shader.frag" />
+    <None Include="flat_shader.vert" />
+    <None Include="lamp.frag" />
+    <None Include="lamp.vert" />
+    <None Include="smooth_shader.frag" />
+    <None Include="smooth_shader.vert" />
+    <None Include="text.frag" />
+    <None Include="text.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PointLight.cpp" />
+    <ClCompile Include="SpotLight.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="LightProperties.h" />
+    <ClInclude Include="Material.h" />
+    <ClInclude Include="ObjectProperties.h" />
+    <ClInclude Include="OrnamentProperties.h" />
+    <ClInclude Include="Plane.h" />
+    <ClInclude Include="PointLight.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="SpotLight.h" />
+    <ClInclude Include="Table.h" />
+    <ClInclude Include="Chair.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4987E3C3-ABB7-4265-A4DE-49E0A74D7B2C}</ProjectGuid>
