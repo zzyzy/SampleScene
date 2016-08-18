@@ -1,5 +1,12 @@
-#ifndef SHADER_H
-#define SHADER_H
+/*
+    Shader.h, based on learnopengl.com
+
+    TODO Implement Rule of Five
+*/
+
+#pragma once
+#ifndef SIMPLE_SCENE_INCLUDE_SHADER_H_INCLUDED
+#define SIMPLE_SCENE_INCLUDE_SHADER_H_INCLUDED
 
 #include <string>
 #include <fstream>
@@ -8,16 +15,31 @@
 
 #include <GL/glew.h>
 
+#define VERTEX_SHADER_EXT ".vert"
+#define FRAGMENT_SHADER_EXT ".frag"
+
 class Shader
 {
 public:
     Shader() = default;
     ~Shader() = default;
 
+    explicit Shader(const GLchar* path)
+    {
+        Setup(path);
+    }
+
     // Constructor generates the shader on the fly
     Shader(const GLchar* vertexPath, const GLchar* fragmentPath)
     {
         Setup(vertexPath, fragmentPath);
+    }
+
+    void Setup(const GLchar* path)
+    {
+        auto vertexPath = path + std::string(VERTEX_SHADER_EXT);
+        auto fragmentPath = path + std::string(FRAGMENT_SHADER_EXT);
+        Setup(vertexPath.c_str(), fragmentPath.c_str());
     }
 
     void Setup(const GLchar* vertexPath, const GLchar* fragmentPath)
@@ -50,8 +72,8 @@ public:
         {
             std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
         }
-        const GLchar* vShaderCode = vertexCode.c_str();
-        const GLchar * fShaderCode = fragmentCode.c_str();
+        auto vShaderCode = vertexCode.c_str();
+        auto fShaderCode = fragmentCode.c_str();
         // 2. Compile shaders
         GLuint vertex, fragment;
         GLint success;
@@ -101,7 +123,8 @@ public:
         glUseProgram(program);
     }
 
-    const GLuint& operator()() const {
+    const GLuint& operator()() const
+    {
         return program;
     }
 
